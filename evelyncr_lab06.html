@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lab 6</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Bitter|Courgette" rel="stylesheet">
+
+<style>
+
+       #container {
+        padding: 10px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+    }
+
+
+    #poem {
+        background-color: palevioletred;
+        height: 250px;
+        width: 500px;
+        border-style: dotted;
+        border-width: 5px;
+        border-color: deeppink;
+        font-family: 'Courgette', cursive;
+        font-size: 2em;
+        text-align: center;
+        color: floralwhite;
+        position: relative;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+    }
+
+
+
+    #input {
+        font-family: 'Bitter', serif;
+        color: palevioletred;
+        position: relative;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        height: 50px;
+        width: 500px;
+        font-size: 1.03em;
+    }
+
+    .buttons {
+        display: inline;
+    }
+
+    .buttons button, button {
+        border: 0 none;
+        border-radius: 4px;
+        display: inline-flex;
+        font-family: 'Bitter', serif;
+        background-color: palevioletred;
+        color: floralwhite;
+        font-size: 1.03em;
+        white-space: nowrap;
+    }
+	
+	input {
+		background-color: palevioletred;
+		font-family: 'Bitter', serif;
+		font-size: 1.03em;
+		color: floralwhite;
+		border: 2px solid floralwhite;
+    	border-radius: 4px;
+		padding: 5px;
+		width: 140px;
+	}
+	
+	#envelope{
+		width:470px;
+		height:200px;
+		position: relative;
+		left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+		border:1em solid transparent;
+		background: linear-gradient(white, white) padding-box,
+		repeating-linear-gradient(-45deg, red 0, red 12.5%,
+		transparent 0, transparent 25%, #58a 0, #58a 37.5%,
+		transparent 0, transparent 50%) 0 / 5em 5em;
+	}
+	
+	#innerenvelope{
+		font-family: 'Courgette', cursive;
+        font-size: 1.05em;
+        text-align: center;
+        color: palevioletred;
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-top: 4px;
+	}
+	
+	#hint {
+		
+		font-family: 'Bitter', serif;
+        color: palevioletred;
+		font-size: 0.8em;
+	}
+
+</style>
+</head>
+
+<body>
+
+    <div id="container">
+        <br>
+        <div id="input">
+            Your Word: <input id="userword" type="text" name="yourword" value="" maxlength="20">
+
+            <div class="buttons">
+                <button id="search" onclick="search()">Search</button>
+                <button id="match" onclick="match()">Match</button>
+                <button id="replace" onclick="replace()">Replace</button>
+            </div>
+        </div>
+
+        <div id ="poem">
+			<br>
+			Roses are red,
+			<br/>
+			Violets are blue,
+			<br/>
+			Sugar is sweet,
+			<br/>
+			And so are you!
+			<br/>
+        </div>
+		<br>
+		<br>
+		
+		
+		<div id="envelope">
+			<div id="innerenvelope">
+			<br>
+			Want to send this valentine? 
+			Enter your postal code below! 
+			<br> 
+			<span id="hint">Remember: Postal Codes should be: Letter Number Letter Number Letter Number. It doesn't matter if you use uppercase or lowercase letters, and it doesn't matter if you choose to put a space after the first three characters.</span>
+			<br>
+			<br> 
+			
+				<input id="postalcode" type ="text" value="" maxlength="6">
+				
+				<button type="submit" onclick="validate()">Submit</button> 
+				
+			</div>
+			
+		
+		
+		</div>
+    </div>
+
+<script>
+
+    var userWord = document.getElementById("userword");
+	var poemText = document.getElementById("poem").innerHTML;
+	var poemRaw = document.getElementById("poem").innerHTML;
+
+//	search for location of user word
+    function search(){
+        var searchTerm = userWord.value;
+//		ignore breaks and tabs
+        poemText = poemText.replace(/([\t]+)|(<br>)/g, "");
+        console.log(poemText);
+        console.log(userWord);
+        console.log(searchTerm);
+        alert("Your search term was found at this place in the poem: " + poemText.search(searchTerm));
+    }
+	
+	function match(){
+		//turn matchterm into a regex instead of a string
+		var matchTerm = new RegExp(userWord.value, "g");
+		//match the regex 
+		var matchResult = poemText.match(matchTerm);
+		//show the entire array
+		document.getElementById("poem").innerHTML = matchResult;
+		
+		console.log(matchTerm);
+		console.log(poemText);
+		console.log(userWord);
+		console.log(matchResult);
+	}
+	
+	function replace(){
+		var rPoem = poemRaw.replace(/(red|sweet)/gi,userWord.value);
+		document.getElementById("poem").innerHTML = rPoem;
+		console.log(userWord.value);
+	}
+	
+	function validate(){
+			
+//		var str = 'hello world!';
+//		var result = /^hello/.test(str);
+//		console.log(result); // true
+		
+		var postalCode = document.getElementById("postalcode").value;
+		var checkCode = /([A-Za-z])(\d)([A-Za-z])(\d)([A-Za-z])(\d)|([A-Za-z])(\d)([A-Za-z])\s(\d)([A-Za-z])(\d)/.test(postalCode);
+		console.log(checkCode);
+		
+		if (checkCode == true) { 
+			 document.getElementById("innerenvelope").innerHTML = "<br> Looks good! Sent!";
+			
+		}
+			
+		else {
+			document.getElementById("hint").innerHTML = "<br> That doesn't look like a postal code. Check again!";
+		}
+	
+						 
+	}
+	
+	
+
+</script>
+
+</body>
+</html>
